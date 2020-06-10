@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+</head>
+<h1>Welcome to Break My Pong! </h1>
+<h3>By: Idan Goldstein</h3>
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script src= "ballBrickHandling.js" type=text/javascript> </script>
+<script src= "ballMove.js" type=text/javascript> </script>
+<script src= "ballPaddleHandling.js" type=text/javascript> </script>
+<script src= "brickReset.js" type=text/javascript> </script>
+<script src= "drawAll.js" type=text/javascript> </script>
+<script src= "drawBricks.js" type=text/javascript> </script>
+<script src= "isBrickAtColRow.js" type=text/javascript> </script>
+<script src= "moveAll.js" type=text/javascript> </script>
+<script src= "resetBall.js" type=text/javascript> </script>
+<script src= "updateAll.js" type=text/javascript> </script>
+
+
+
+<script>
+var ballX = 75;
+var ballY = 75;
+var ballSpeedX = 3;
+var ballSpeedY = 5;
+const paddle_width= 100;
+const paddle_thickness= 10;
+const paddle_dist_from_edge=60;
+var paddleX= 400; //starting positon
+var canvas, canvasContext;
+var mouseX=0;
+var mouseY=0;
+const brick_width= 80;
+const brick_height= 20;
+const brick_col= 10;
+let brick_row= 14;
+let brickGrid = new Array(brick_col);
+let brickGap= 2;
+let bricksLeft=0;
+
+
+window.onload = function() { //MAIN, WILL RUN THE GAME
+	canvas = document.getElementById('gameCanvas');
+	canvasContext = canvas.getContext('2d');
+
+	var framesPerSecond = 45;
+	setInterval(updateAll, 1000/framesPerSecond);
+
+    canvas.addEventListener("mousemove", updateMousePos);
+    brickReset();
+    resetBall();
+}
+
+function updateMousePos(evt){
+
+    var rect= canvas.getBoundingClientRect();
+    var root= document.documentElement;
+    mouseX= evt.clientX- rect.left- root.scrollLeft;
+    mouseY= evt.clientY- rect.top- root.scrollTop;
+    paddleX= mouseX- paddle_width/2;
+
+}
+
+function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
+	canvasContext.fillStyle = fillColor;
+	canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+}
+
+function colorCircle(centerX,centerY, radius, fillColor) {
+	canvasContext.fillStyle = fillColor;
+	canvasContext.beginPath();
+	canvasContext.arc(centerX,centerY, 7.55, 0,Math.PI*2, true);
+	canvasContext.fill();
+}
+
+//This function may not be needed anymore because it was used for debugging only 
+function colorText(showWords, textX, textY, fillColor){
+    canvasContext.fillStyle= fillColor;
+    canvasContext.fillText(showWords, textX, textY);
+}
+
+function rowColToArrayIndex(col,row){
+    return brick_col * row + col; 
+}
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
